@@ -6,6 +6,8 @@ use App\Http\Controllers\Admin\UserManagementController;
 use App\Http\Controllers\Auth\EmailConfirmationController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\VerificationNoticeController;
+use App\Http\Controllers\Seguridad\ReporteController;
+use App\Http\Controllers\Usuario\VisitaController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -68,10 +70,22 @@ Route::middleware(['auth', 'confirmed', 'role:seguridad'])->group(function () {
     Route::get('/seguridad', function () {
         return view('seguridad.dashboard');
     })->name('seguridad.dashboard');
+
+    Route::prefix('seguridad')->name('seguridad.')->group(function () {
+        Route::get('reportes', [ReporteController::class, 'index'])->name('reportes.index');
+        Route::get('reportes/{visitante}', [ReporteController::class, 'show'])->name('reportes.show');
+        Route::patch('reportes/{visitante}/estado', [ReporteController::class, 'updateEstado'])->name('reportes.updateEstado');
+    });
 });
 
 Route::middleware(['auth', 'confirmed', 'role:usuario'])->group(function () {
     Route::get('/usuario', function () {
         return view('usuario.dashboard');
     })->name('usuario.dashboard');
+
+    Route::prefix('usuario')->name('usuario.')->group(function () {
+        Route::get('visitas', [VisitaController::class, 'index'])->name('visitas.index');
+        Route::get('visitas/crear', [VisitaController::class, 'create'])->name('visitas.create');
+        Route::post('visitas', [VisitaController::class, 'store'])->name('visitas.store');
+    });
 });
