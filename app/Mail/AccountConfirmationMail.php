@@ -7,20 +7,18 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class NewUserPasswordMail extends Mailable
+class AccountConfirmationMail extends Mailable
 {
     use Queueable, SerializesModels;
 
     public function __construct(
         public User $user,
-        public string $password,
-        public ?string $confirmationUrl = null,
+        public string $confirmationUrl
     ) {}
 
     public function build(): self
     {
-        return $this->subject('Tus credenciales de acceso')
-            ->view('emails.new_user_password');
+        return $this->subject('Confirma tu cuenta en Inmobiliapp')
+            ->view('emails.account_confirmation');
     }
 }
-

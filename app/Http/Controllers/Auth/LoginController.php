@@ -36,6 +36,10 @@ class LoginController extends Controller
         /** @var User $user */
         $user = Auth::user();
 
+        if (! $user->hasRole('superadmin') && ! $user->hasConfirmedEmail()) {
+            return redirect()->route('verification.notice');
+        }
+
         return match ($user->role) {
             'superadmin' => redirect()->route('superadmin.dashboard'),
             'admin' => redirect()->route('admin.dashboard'),

@@ -60,6 +60,12 @@
 
                 </div>
 
+                @if (session('status'))
+                    <div class="alert alert-success small">
+                        {{ session('status') }}
+                    </div>
+                @endif
+
                 @if ($errors->any())
                     <div class="alert alert-danger">
                         <ul class="mb-0">

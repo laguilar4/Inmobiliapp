@@ -20,9 +20,17 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'nombres',
+        'apellidos',
         'email',
         'password',
         'role',
+        'telefono',
+        'numero_torre',
+        'numero_apartamento',
+        'proyecto_id',
+        'cedula',
+        'email_verified_at',
     ];
 
     /**
@@ -56,5 +64,10 @@ class User extends Authenticatable
     public function proyecto()
     {
         return $this->belongsTo(Proyecto::class);
+    }
+
+    public function hasConfirmedEmail(): bool
+    {
+        return $this->email_verified_at !== null;
     }
 }

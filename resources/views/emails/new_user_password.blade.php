@@ -14,6 +14,16 @@
         <strong>Contraseña temporal:</strong> {{ $password }}
     </p>
 
+    @if (! empty($confirmationUrl))
+        <p>
+            <strong>Importante:</strong> debes confirmar tu cuenta haciendo clic en el siguiente enlace
+            (válido por 7 días):
+        </p>
+        <p>
+            <a href="{{ $confirmationUrl }}">Confirmar mi cuenta</a>
+        </p>
+    @endif
+
     <p>Te recomendamos iniciar sesión y cambiar tu contraseña lo antes posible.</p>
 
     <p>Saludos,<br>

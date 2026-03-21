@@ -23,9 +23,9 @@
                                 Proyectos
                             </a>
 
-                            <a href="{{ route('superadmin.users.create') }}"
+                            <a href="{{ route('superadmin.users.index') }}"
                                class="nav-link {{ request()->routeIs('superadmin.users.*') ? 'active' : 'text-body' }}">
-                                Crear usuario
+                                Usuarios
                             </a>
                         @endif
 
@@ -40,9 +40,9 @@
                                 Constructoras
                             </a>
 
-                            <a href="{{ route('admin.users.create') }}"
+                            <a href="{{ route('admin.users.index') }}"
                                class="nav-link {{ request()->routeIs('admin.users.*') ? 'active' : 'text-body' }}">
-                                Crear usuario
+                                Usuarios
                             </a>
                         @endif
                     </nav>
