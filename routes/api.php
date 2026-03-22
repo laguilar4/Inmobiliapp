@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\PublicacionController;
 use App\Http\Controllers\Api\ReporteController;
 use App\Http\Controllers\Api\VisitaController;
 use Illuminate\Support\Facades\Route;
@@ -30,4 +31,10 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('reportes/{visitante}', [ReporteController::class, 'show']);
         Route::patch('reportes/{visitante}/estado', [ReporteController::class, 'updateEstado']);
     });
+
+    // Publicaciones — todos los roles autenticados pueden ver; solo admin/superadmin pueden crear/editar
+    Route::get('publicaciones', [PublicacionController::class, 'index']);
+    Route::get('publicaciones/{publicacion}', [PublicacionController::class, 'show']);
+    Route::post('publicaciones', [PublicacionController::class, 'store']);
+    Route::post('publicaciones/{publicacion}', [PublicacionController::class, 'update']);
 });
