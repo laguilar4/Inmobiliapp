@@ -27,6 +27,11 @@
                                class="nav-link {{ request()->routeIs('superadmin.users.*') ? 'active' : 'text-body' }}">
                                 Usuarios
                             </a>
+
+                            <a href="{{ route('superadmin.publicaciones.index') }}"
+                               class="nav-link {{ request()->routeIs('superadmin.publicaciones.*') ? 'active' : 'text-body' }}">
+                                Publicaciones
+                            </a>
                         @endif
 
                         @if(auth()->user()->role === 'admin')
@@ -43,6 +48,11 @@
                             <a href="{{ route('admin.users.index') }}"
                                class="nav-link {{ request()->routeIs('admin.users.*') ? 'active' : 'text-body' }}">
                                 Usuarios
+                            </a>
+
+                            <a href="{{ route('admin.publicaciones.index') }}"
+                               class="nav-link {{ request()->routeIs('admin.publicaciones.*') ? 'active' : 'text-body' }}">
+                                Publicaciones
                             </a>
                         @endif
                     </nav>

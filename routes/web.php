@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\ConstructoraController;
 use App\Http\Controllers\Admin\ProyectoController;
+use App\Http\Controllers\Admin\PublicacionController;
 use App\Http\Controllers\Admin\UserManagementController;
 use App\Http\Controllers\Auth\EmailConfirmationController;
 use App\Http\Controllers\Auth\LoginController;
@@ -49,6 +50,12 @@ Route::middleware(['auth', 'confirmed', 'role:superadmin'])->group(function () {
 
         Route::resource('users', UserManagementController::class)
             ->only(['index', 'create', 'store', 'edit', 'update']);
+
+        Route::resource('publicaciones', PublicacionController::class)
+            ->only(['index', 'create', 'store', 'show', 'edit', 'update']);
+
+        Route::delete('publicaciones/supp-images/{suppImage}', [PublicacionController::class, 'destroySuppImage'])
+            ->name('publicaciones.supp_images.destroy');
     });
 });
 
@@ -63,6 +70,12 @@ Route::middleware(['auth', 'confirmed', 'role:admin'])->group(function () {
 
         Route::resource('users', UserManagementController::class)
             ->only(['index', 'create', 'store', 'edit', 'update']);
+
+        Route::resource('publicaciones', PublicacionController::class)
+            ->only(['index', 'create', 'store', 'show', 'edit', 'update']);
+
+        Route::delete('publicaciones/supp-images/{suppImage}', [PublicacionController::class, 'destroySuppImage'])
+            ->name('publicaciones.supp_images.destroy');
     });
 });
 
