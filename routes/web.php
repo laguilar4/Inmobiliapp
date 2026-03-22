@@ -52,7 +52,8 @@ Route::middleware(['auth', 'confirmed', 'role:superadmin'])->group(function () {
             ->only(['index', 'create', 'store', 'edit', 'update']);
 
         Route::resource('publicaciones', PublicacionController::class)
-            ->only(['index', 'create', 'store', 'show', 'edit', 'update']);
+            ->only(['index', 'create', 'store', 'show', 'edit', 'update'])
+            ->parameters(['publicaciones' => 'publicacion']);
 
         Route::delete('publicaciones/supp-images/{suppImage}', [PublicacionController::class, 'destroySuppImage'])
             ->name('publicaciones.supp_images.destroy');
@@ -72,7 +73,8 @@ Route::middleware(['auth', 'confirmed', 'role:admin'])->group(function () {
             ->only(['index', 'create', 'store', 'edit', 'update']);
 
         Route::resource('publicaciones', PublicacionController::class)
-            ->only(['index', 'create', 'store', 'show', 'edit', 'update']);
+            ->only(['index', 'create', 'store', 'show', 'edit', 'update'])
+            ->parameters(['publicaciones' => 'publicacion']);
 
         Route::delete('publicaciones/supp-images/{suppImage}', [PublicacionController::class, 'destroySuppImage'])
             ->name('publicaciones.supp_images.destroy');

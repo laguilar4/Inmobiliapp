@@ -32,11 +32,11 @@ class PublicacionController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $request->validate([
-            'titulo'       => ['required', 'string', 'max:255'],
-            'descripcion'  => ['required', 'string'],
-            'proyecto_id'  => ['required', 'exists:proyectos,id'],
-            'archivo'      => ['nullable', 'file', 'mimes:jpg,jpeg,png,gif,webp,mp4,mov,avi,mkv,webm', 'max:102400'],
-            'supp_images'  => ['nullable', 'array', 'max:3'],
+            'titulo'        => ['required', 'string', 'max:255'],
+            'descripcion'   => ['required', 'string'],
+            'proyecto_id'   => ['required', 'exists:proyectos,id'],
+            'archivo'       => ['nullable', 'file', 'mimes:jpg,jpeg,png,gif,webp,mp4,mov,avi,mkv,webm', 'max:102400'],
+            'supp_images'   => ['nullable', 'array', 'max:3'],
             'supp_images.*' => ['file', 'image', 'mimes:jpg,jpeg,png,gif,webp', 'max:10240'],
         ]);
 
@@ -51,7 +51,13 @@ class PublicacionController extends Controller
             $file      = $request->file('archivo');
             $directory = 'posts/' . $publicacion->id;
             $filename  = $file->getClientOriginalName();
-            $path      = S3Helper::upload($directory, $file, $filename);
+            $path      = S3Helper::upload($directory, $file, $filename, 'private');
+
+            if ($path === false) {
+                $publicacion->delete();
+                return back()->withInput()
+                    ->withErrors(['archivo' => 'No se pudo subir el archivo a S3. Verifica las credenciales y permisos del bucket.']);
+            }
 
             $publicacion->update([
                 'archivo_path'       => $path,
@@ -67,7 +73,13 @@ class PublicacionController extends Controller
                 ]);
 
                 $suppDir  = 'posts/supp_images/' . $supp->id;
-                $suppPath = S3Helper::upload($suppDir, $img, $img->getClientOriginalName());
+                $suppPath = S3Helper::upload($suppDir, $img, $img->getClientOriginalName(), 'private');
+
+                if ($suppPath === false) {
+                    $supp->delete();
+                    return back()->withInput()
+                        ->withErrors(['supp_images' => 'No se pudo subir una imagen de soporte a S3. Verifica las credenciales y permisos del bucket.']);
+                }
 
                 $supp->update(['directorio' => $suppPath]);
             }
@@ -120,7 +132,12 @@ class PublicacionController extends Controller
             $file      = $request->file('archivo');
             $directory = 'posts/' . $publicacion->id;
             $filename  = $file->getClientOriginalName();
-            $path      = S3Helper::upload($directory, $file, $filename);
+            $path      = S3Helper::upload($directory, $file, $filename, 'private');
+
+            if ($path === false) {
+                return back()->withInput()
+                    ->withErrors(['archivo' => 'No se pudo subir el archivo a S3. Verifica las credenciales y permisos del bucket.']);
+            }
 
             $publicacion->update([
                 'archivo_path'       => $path,
@@ -145,7 +162,13 @@ class PublicacionController extends Controller
                 ]);
 
                 $suppDir  = 'posts/supp_images/' . $supp->id;
-                $suppPath = S3Helper::upload($suppDir, $img, $img->getClientOriginalName());
+                $suppPath = S3Helper::upload($suppDir, $img, $img->getClientOriginalName(), 'private');
+
+                if ($suppPath === false) {
+                    $supp->delete();
+                    return back()->withInput()
+                        ->withErrors(['supp_images' => 'No se pudo subir una imagen de soporte a S3. Verifica las credenciales y permisos del bucket.']);
+                }
 
                 $supp->update(['directorio' => $suppPath]);
             }
